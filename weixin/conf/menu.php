@@ -1,0 +1,36 @@
+<?php
+$_MENU = array(
+    //菜单一
+    'one'=>array(
+        'button'=>array(
+            array('type'=>'click','name'=>'最新消息','key'=>'MENU_KEY_NEWS'),
+    		    array('type'=>'view','name'=>'我要搜索','url'=>'http://dev.huanpeng.com/main'),
+        )
+    ),
+    //菜单二
+    'two'=>array(
+        'button'=>array(
+            array('type'=>'click','name'=>'最新消息','key'=>'MENU_KEY_NEWS'),
+            array('type'=>'view','name'=>'我要搜索','url'=>'http://dev.huanpeng.com/main'),
+        )
+    ),
+    //菜单三
+    'three'=>array(
+        'button'=>array(
+            array('type'=>'view','name'=>'直播间','url'=>'http://47.93.50.123/room/index'),
+            array('name'=>'直播历史','sub_button'=>array(
+                array('type'=>'view','name'=>'历史消息','url'=>'http://47.93.50.123/room/index'),
+                array('type'=>'view','name'=>'热门直播','url'=>'http://47.93.50.123/room/index'),
+                array('type'=>'view','name'=>'精彩录像','url'=>'http://47.93.50.123/room/index'),
+                array('type'=>'view','name'=>'欢朋新闻','url'=>'http://47.93.50.123/room/index')              
+            )),
+            array('name'=>'直播教程','sub_button'=>array(
+                array('type'=>'view','name'=>'成为主播','url'=>'http://47.93.50.123/room/index'),
+                array('type'=>'view','name'=>'iphone直播教程','url'=>'http://47.93.50.123/room/index'),
+                array('type'=>'view','name'=>'android直播教程','url'=>'http://47.93.50.123/room/index'),
+                array('type'=>'view','name'=>'机器人帮助','url'=>'http://47.93.50.123/room/index')
+            )),
+        )
+    ),
+    
+);

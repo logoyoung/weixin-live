@@ -1,0 +1,342 @@
+<html lang="zh-cmn-Hans" data-dpr="1" max-width="640" style="font-size: 23.4375px;" class="ios full"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="hotcss" content="initial-dpr=1;max-width=640">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  
+  <title>房间</title>
+  <link rel="stylesheet" href="../css/leaves.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="../css/animation.css" type="text/css" media="screen" charset="utf-8">
+</head>
+<body>
+<style>
+	html, body { height: 100%; width: 100%; margin: 0;padding:0;overflow:hidden;}
+#whale {height: 80.5%; width: 100%;position: absolute;z-index: 999999999;}
+*{
+	margin: 0;
+	padding: 0;
+}
+
+#contain{
+	width: 100%;
+	height: 100%;
+	background: ;
+	position: relative;
+}
+#contain #src-video{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 9;
+}
+#contain #canvas-video{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 99;
+}
+#contain #canvas-danmu{
+	width: 100%;
+	height: 200px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 999;
+	margin: 40% 0;
+}
+#contain .control{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 999999999;
+}
+#contain .control .video-control{
+	width: 4rem;
+    height: 4rem;
+    position: absolute;
+    left: 5rem;
+    top: 11.2rem;
+}
+#contain .control .input-control{
+	width: 60%;
+    height: 2rem;
+    /* margin: auto; */
+    position: absolute;
+    bottom: 1rem;
+    left: 5%;
+}
+#contain .control .input-control input{
+	width: 8rem;
+    height: 1.5rem;
+    float: left;
+}
+#contain .control .gift-control{
+	width: 2rem;
+    height: 2rem;
+    /* margin: auto; */
+    background: url(https://i.h2.pdim.gs/2a29a55863939fc057b588f5d40b7e39.png) no-repeat center;
+    position: absolute;
+    bottom: 1.2rem;
+    right: 5%;
+    background-size: 100%;
+}
+#contain .control .gift-pannel{
+	width: 100%;
+    height: 9rem;
+    /* margin: auto; */
+    background: rgba(0,0,0,.7);
+    position: absolute;
+    bottom: 0rem;
+    display: none;
+    z-index: 99;
+}
+.pannelshow{
+	background: rgba(0,0,0,0.5);
+}
+#contain .control .video-control.show{
+	background: transparent url(https://static.hdslb.com/mobile/img/ui_2.png) no-repeat -5.38347rem -15.13947rem;
+}
+#send{
+	display: block;
+    font-size: .42666667rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: url(https://i.h2.pdim.gs/442721b2ebc7c0e78ca4d9fca76da29f.png) no-repeat center;
+    background-size: 100% 100%;
+    text-indent: -999rem;
+    /* margin: .42666667rem auto; */
+    float: left;
+}
+.gift-list{
+	margin: 1rem;
+}
+ul ,li {
+	list-style: none;
+}
+a{
+	outline: none;
+	text-decoration: none;
+}
+.gift-list li{
+	float: left;
+    width: 1.64666667rem;
+    margin-left: 1.664rem;
+    padding-top: .29866667rem;
+	font-size:.5rem;
+}
+.gift-list li a{
+	display: block;
+}
+.gift-list li a img{
+	width: 100%;
+}
+.gift-list li .gift-name{
+	color: #ffffff;
+}
+.gift-list li .gift-price{
+	color: #ff7800;
+}
+.gift-list li p{
+	text-align: center;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
+}
+
+#canvas-gift{
+	width:100%;
+	height:98%;
+	position:absolute;
+	z-index:99999;
+}
+
+</style>
+
+<!--容器-->
+<div id="contain" >
+	<!--源视频-->
+	<div id="src-video">
+		<video  poster="../img/d.jpeg" style="
+    background: rgba(0,0,0,.9);width:100%;" src="{{$stream}}" controls webkit-playsinline  playsinline preload loop></video>
+	</div>
+	<!--画布视频-->
+	<!--<div id="canvas-video">
+		<canvas style="width:100%;height:100%;" ></canvas>
+	</div>-->
+	<!--弹幕层-->
+	<div id="canvas-danmu" >
+		<canvas style="width:100%;height:100%"></canvas>
+	</div>
+	<!--控件层-->
+	<div class="control">
+		<!--播放器控件-->
+		<div id="video-play-btn"  class="control-btn video-control play" v-on:click="videoplay" v-bind:class="{ show:playshow }"></div>
+		<!--礼物控件-->
+		<div class="control-btn gift-control" v-on:click="showgift"></div>
+		<div class="control-btn gift-pannel " v-bind:style="{ display:block }" v-on:click="nogift">
+			
+		<div class="gift-list" >
+			<ul>
+				<li data-gid="101" data-price="1" v-on:click="sendgift(101)" >
+					<a><img src="https://i.h2.pdim.gs/39bfbcfc5a6a5dd3d6115ed8127f7c37.png"></a>
+					<p class="gift-name">666</p>
+					<p class="gift-price">1币</p>
+				</li>
+				<li data-gid="102" data-price="1" v-on:click="sendgift(102)">
+					<a><img src="https://i.h2.pdim.gs/24dc2ff14b9c8b6aa7628d6e903edd95.png"></a>
+					<p class="gift-name">虾米</p>
+					<p class="gift-price">6币</p>
+				</li>
+				<li>
+					<a><img src="https://i.h2.pdim.gs/42ea45b2dbba7cdc6f32fc9b37f01ab2.png"></a>
+					<p class="gift-name">么么哒</p>
+					<p class="gift-price">9币</p>
+				</li>
+				<li>
+					<a><img src="https://i.h2.pdim.gs/11e77f6491c54782bc76850b0d8309d7.png"></a>
+					<p class="gift-name">有余</p>
+					<p class="gift-price">10币</p>
+				</li>
+				<li>
+					<a><img src="https://i.h2.pdim.gs/9fd45956fc859617426d5cb4e279f727.png"></a>
+					<p class="gift-name">老哥稳</p>
+					<p class="gift-price">12币</p>
+				</li>
+				<li>
+					<a><img src="https://i.h2.pdim.gs/2501073df4d559bc0cf1a7092464532c.png"></a>
+					<p class="gift-name">LOVE</p>
+					<p class="gift-price">21币</p>
+				</li>
+				<li>
+					<a><img src="https://i.h2.pdim.gs/5dc41b4e9ce364c5c307476b756096a2.png"></a>
+					<p class="gift-name">一生</p>
+					<p class="gift-price">73币</p>
+				</li>
+				<li>
+					<a><img src="https://i.h2.pdim.gs/3b66f396c3cab2d38fe2b925650eae10.png"></a>
+					<p class="gift-name">地久</p>
+					<p class="gift-price">99币</p>
+				</li>
+			</ul>
+		</div>
+
+		</div>
+		<!--输入控件-->
+		<div class="control-btn input-control">
+			<input id="msg" type="text" style="padding:0px 1rem" placeholder="请输入聊天内容" />
+			<span id="send" v-on:click="sendmsg" ></span>
+		</div>
+		<!--点赞动画-->
+		<div id="dianzan"></div>
+		
+	</div>
+	<!--全局礼物层-->
+	<div id="canvas-gift">
+      <div id="leafContainer"></div>
+	  <div id="boom" ></div>
+    </div>
+</div>
+
+<script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+<script src="../js/iphone-inline-video.js"></script>
+<script src="../js/danmu.js"></script>
+<script src="../js/ws.js"></script>
+<!--<script src="../js/leaves.js"></script>-->
+<script src="../js/gift.js"></script>
+
+<!--<script src="index.js"></script>-->
+<script>
+	!(function(){
+		var vm = new Vue({
+			el:'#contain',
+			data:{
+				uid:0,
+				roomid:0,
+				playshow:true,
+				pannelshow:true,
+				block:'none',
+				video:null,
+			},
+			methods:{
+				showgift:function(){
+					this.block = 'block';
+				},
+				nogift:function(){
+					this.block = 'none';
+				},
+				getvideo:function(){
+					 this.video = document.getElementById('src-video').getElementsByTagName('video')[0];
+				},
+				videoplay:function(){
+					if (this.video.paused) {
+						this.video.play();
+						this.playshow = false;
+					} else {
+						this.video.pause();
+						this.playshow = true;
+					}
+				},
+				sendmsg:function(){
+					var msg = document.getElementById('msg').value;
+					MSG.send({channel:'room',content:msg});
+					document.getElementById('msg').value = '';
+					//if()
+					danmu.send(msg,'red');
+				},
+				sendgift:function(giftid){
+					var channel = 'gift';
+					if(giftid == '101')
+						GIFT.flower.start();
+					if(giftid == '102')
+						GIFT.boom.start();
+					MSG.send({channel:'gift',content:giftid});
+				},
+				init:function(){
+					this.uid = 100;
+					this.roomid = 100;
+					this.getvideo();
+					danmu.init('canvas-danmu');
+					GIFT.dianzan.init();
+					MSG.init({
+						uid:100,
+						tid:100,
+						content:'connect',
+						channel:'room',
+						server:'ws://47.93.50.123:4326',
+					});
+				}
+			},
+		})
+		//初始化
+		vm.init();
+
+	}())
+
+	/*!(function(){
+		var videoSrc = document.getElementById('src-video').getElementsByTagName('video')[0];
+		var videoCanvas = document.getElementById('canvas-video').getElementsByTagName('canvas')[0].getContext('2d');
+
+		videoSrc.addEventListener('play',function() { 
+  		var i = window.setInterval(function() {
+    	videoCanvas.drawImage(videoSrc, 0, 0);
+  			}, 20);
+		},false);
+		videoSrc.addEventListener('pause',function() {window.clearInterval(i);},false);
+		videoSrc.addEventListener('ended',function() {clearInterval(i);},false);
+		videoSrc.play();
+	}())*/
+ !(function(){
+ 	//var livestatus = "{{$stream}}";
+	//alert("当前无直播");
+ }())
+</script>
+
+</body></html>

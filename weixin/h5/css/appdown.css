@@ -1,0 +1,300 @@
+@CHARSET "UTF-8";
+
+ul,li,p,dl,dd,a,b,img,div,h1,h2,h3,h4,em,i,html {
+	padding: 0;
+	margin: 0
+}
+
+ul,li {
+	list-style: none
+}
+
+a {
+	text-decoration: none;
+	border: 0;
+	outline: 0
+}
+
+img {
+	display: block;
+	border: 0
+}
+
+html {
+	height: 100%
+}
+
+.fl {
+	float: left
+}
+
+.fr {
+	float: right
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box
+}
+
+*:before,*:after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box
+}
+
+html {
+	font-size: 62.5%
+}
+
+html,body {
+	position: relative;
+	width: 100%
+}
+
+body {
+	background: #fff;
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+	font-size: 2rem;
+	margin: 0
+}
+
+b {
+	font-weight: normal
+}
+
+.wrap {
+	width: 100%;
+	min-width: 320px;
+	overflow: hidden
+}
+
+.top {
+	width: 130%;
+	margin-left: -15%
+}
+
+.top img {
+	width: 100%
+}
+
+.btn {
+	margin-top: 4%;
+	padding-bottom: 4%;
+	width: 100%;
+	min-width: 200px
+}
+
+.row {
+	width: 100%;
+	margin-bottom: 4%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center
+}
+
+.dload {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	width: 280px;
+	height: 60px;
+	border: 2px solid #ff7800;
+	border-radius: 6px
+}
+
+.dload .btn_txt {
+	display: block;
+	float: left;
+	width: 80%;
+	height: 100%;
+	color: #ff7800;
+	text-align: center
+}
+
+.dload .btn_txt .btn_iocn {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	min-width: 25px;
+	float: left;
+	margin: 0 6%;
+	height: 100%
+}
+
+.dload .btn_txt b {
+	display: table-cell;
+	height: 60px;
+	font-size: 1.8rem;
+	vertical-align: middle;
+	text-align: center
+}
+
+.dload .btn_txt .btn_iocn img {
+	height: 100%
+}
+
+.dload .btnr {
+	display: block;
+	width: 18%;
+	height: 100%;
+	border-left: 2px solid #ff7800;
+	float: right
+}
+
+.dload .btn_d1 {
+	background: url(../images/d1.png) top center no-repeat;
+	background-size: auto 100%
+}
+
+.dload .btn_d2 {
+	background: url(../images/d2.png) top center no-repeat;
+	background-size: auto 100%
+}
+
+.e_btn {
+	margin-top: 4%;
+	width: 100%;
+	background: url(../images/line.png) top center no-repeat;
+	background-size: 90% 2px;
+	padding: 14% 0 4%
+}
+
+.e_btn p {
+	font-size: 1.6rem;
+	line-height: 2rem;
+	padding-bottom: 4%;
+	text-align: center;
+	color: #fd6e1f
+}
+
+@media ( max-width :340px) {
+	.dload {
+		width: 190px;
+		height: 40px
+	}
+	.dload .btn_txt b {
+		height: 40px;
+		font-size: 1.2rem;
+		vertical-align: middle
+	}
+	.dload .btn_txt .btn_iocn {
+		margin: 0 4%
+	}
+	.e_btn p {
+		font-size: 1.2rem;
+		line-height: 1.6rem
+	}
+}
+
+.ele_fc {
+	display: block;
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	opacity: .8;
+	background: #000
+}
+
+.ele_fc .wx {
+	width: 70%;
+	height: 100%;
+	margin: 0 auto
+}
+
+.ele_fc .wx span {
+	display: block;
+	float: right;
+	position: relative
+}
+
+.ele_fc .wx span img {
+	max-width: 590px;
+	width: 100%;
+	height: auto
+}
+
+.ele_fc .wx span a {
+	display: block;
+	width: 40%;
+	height: 10%;
+	position: absolute;
+	bottom: 0;
+	right: 50%;
+	margin-right: -16%
+}
+
+.ele_fc .arrows {
+	max-width: 100px;
+	width: 20%;
+	height: 100%;
+	background: url(../images/arrows_bj.png) no-repeat;
+	background-size: contain;
+	position: absolute;
+	right: 0;
+	top: 0
+}
+
+@media ( max-width :855px) {
+	.ele_fc .wx a {
+		width: 40%;
+		height: 10%
+	}
+}
+
+.other_client {
+	display: none
+}
+
+.other_more {
+	display: none
+}
+
+.hide {
+	display: none
+}
+
+.show {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex
+}
+
+.pop_ios {
+	display: none
+}
+
+.pop_ios .wx span {
+	padding-top: 25%
+}
+
+.pop_ios .wx {
+	width: 80%
+}
+
+.pop_ios .wx span img {
+	max-width: 636px
+}
+
+.pop_ios .arrows {
+	max-width: 133px;
+	width: 20%;
+	height: 100%;
+	background: url(../images/pop_ios1.png) no-repeat;
+	background-size: contain;
+	right: 10px;
+	top: 10px
+}

@@ -1,0 +1,90 @@
+.gift-animation
+{
+position:absolute;
+left:-100px;
+top:30%;
+animation:giftfirst 5s;
+animation-iteration-count: infinite;
+-webkit-animation:giftfirst 5s; /* Safari and Chrome */
+}
+
+@keyframes giftfirst
+{
+0%   { left:0; top:20%;}
+30%  { left:40%; top:20%;}
+80%  { left:60%; top:20%;}
+100%  { left:120%; top:20%;}
+}
+
+
+@-webkit-keyframes giftfirst /* Safari and Chrome */
+{
+0%   { left:0; top:20%;}
+30%  { left:40%; top:20%;}
+80%  { left:60%; top:20%;}
+100%  { left:120%; top:20%;}
+}
+
+.dianzan-animation
+{
+	position:absolute;
+	right:-1.5rem;
+	bottom:1rem;
+	/*animation:dianzan 3s infinite;
+	-webkit-animation:dianzan 3s infinite;*/
+	transition: bottom 3s,right 1s,opacity 3s ease;
+	-webkit-transition: bottom 3s,right 1s,opacity 3s ease;
+}
+@keyframes dianzan
+{
+	100% {bottom:80%;opacity:0;}
+}
+@-webkit-keyframes dianzan
+{
+	100% {bottom:80%;opacity:0;}
+}
+
+.heart
+{
+    width:.75rem;
+    height:.75rem;
+    margin:1rem auto; 
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+}
+.heart:before,.heart:after
+{
+    position:absolute;
+    content:'';
+    width:.75rem;
+    height:.75rem;
+    display:block;
+    border-radius:50%;
+	background:inherit; 
+}
+.heart:before
+{
+    left:-.45rem;
+    bottom:0;
+}
+.heart:after
+{
+    top:-.45rem;
+    right:0;
+}
+.heart.red{
+	background:red;
+}
+.heart.green{
+	background:#ADFF2F
+}
+.heart.blue{
+	background:#00BFFF;
+}
+.heart.yellow{
+	background:#FFD700;
+}
+

@@ -1,0 +1,160 @@
+<?php
+/**
+ * 通用辅助函数
+ * @logoyoung
+ * 
+ *   */
+function mylog($msg, $logfile = WEIXIN_LOG){
+    $msg = '['.getmypid().']['.getmydate().']'.$msg."\n";
+    $r   = file_put_contents($logfile, $msg, FILE_APPEND);
+    return $r;
+}
+function getmydate($tm = null){
+    if(!$tm)
+        $tm = time();
+    return date('Y-m-d H:i:s');
+    
+}
+function config($key = null, $value = null, $default=null) {
+    static $_config = array();
+    // get all config
+    if ($key === null) return $_config;
+    // if key is source, load ini file and return
+    if ($key === 'source' && file_exists($value)) return $_config = array_merge($_config, parse_ini_file($value, true));
+    // for all other string keys, set or get
+    if (is_string($key)) {
+        if ($value === null)
+            return (isset($_config[$key]) ? $_config[$key] : $default);
+        return ($_config[$key] = $value);
+    }
+    // setting multiple settings
+    if (is_array($key) && array_diff_key($key, array_keys(array_keys($key))))
+        $_config = array_merge($_config, $key);
+}
+/**
+ * Returns the string contained by 'path.url' in config.ini.
+ * This includes the hostname and path. If called with $path_only set to
+ * true, it will return only the path section of the URL.
+ *
+ * @param boolean $path_only defaults to false, true returns only the path
+ * @return string value pointed to by 'dispatch.url' in config.ini.
+ */
+function site($path_only = false) {
+    if (!($url = config('site.url'))) return null;
+    if ($path_only) return rtrim(parse_url($url,  PHP_URL_PATH), '/');
+    return rtrim($url, '/').'/';
+}
+/**
+ * helper function to get the pathinfo.
+ */
+function path() {
+    static $path;
+    if (!$path) {
+        // normalize routing base, if site is in sub-dir
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        // strip base from path
+        if (($base = site(true)) !== null)
+            $path = preg_replace('@^'.preg_quote($base).'@', '', $path);
+        // if we have a routing file (no mod_rewrite), strip it from the URI
+        if ($root = config('site.router'))
+            $path = preg_replace('@^/?'.preg_quote(trim($root, '/')).'@i', '', $path);
+    }
+    return $path;
+}
+/**
+ * Sets or gets an entry from the loaded cache in shared memory
+ *
+ * @param string $key setting to set or get. passing null resets the config
+ * @param string $value optional, If present, sets $key to this $value.
+ * @param string $expire optional, If present, sets $expire to this $value.
+ *
+ * @return mixed|null value
+ */
+function mcache($key, $val=null, $expire=100) {
+    static $_caches = null;
+    static $_shm = null;
+    if ( null === $_shm ) $_shm = @shmop_open(crc32(config('mcache.solt', null, 'mcache.solt')),
+        'c', 0755, config('mcache.size', null, 10485760));
+    if ( null === $_caches && $_shm && ($size = intval(shmop_read($_shm, 0, 10))))
+        $_caches = $size ? @unserialize(@shmop_read($_shm, 10, $size)) : array();
+    if (($time = time()) && $val && $expire){
+        $_caches[$key] = array($time + intval($expire), $val);
+        if($_shm && ($size = @shmop_write($_shm, serialize(array_filter($_caches, function($n)use($time){return $n[0] > $time;})), 10)))
+            @shmop_write($_shm, sprintf('%10d', $size), 0);
+        return $val;
+    }
+    return (isset($_caches[$key]) && $_caches[$key][0] > $time) ? $_caches[$key][1] : null;
+}
+function cache($key, $val=null, $expire=100) {
+    static $_shm = null;
+    if ( null === $_shm ){
+        $_shm = @shm_attach(crc32(config('cache.solt', null, 'cache.solt')),
+            config('cache.size', null, 10485760), 0755);
+        register_shutdown_function(function() use ($_shm){ shm_detach($_shm); });
+    }
+    if (($time = time()) && ($k = crc32($key)) && $val && $expire){
+        @shm_put_var($_shm, $k, array($time + $expire, $val));
+        return $val;
+    }
+    return ($_shm && shm_has_var($_shm, $k) && ($data=shm_get_var($_shm, $k)) && is_array($data) && $data[0]>$time) ? $data[1] : null;
+}
+/**
+ * Wraps around $_SESSION
+ *
+ * @param string $name name of session variable to set
+ * @param mixed $value value for the variable. Set this to null to
+ *   unset the variable from the session.
+ *
+ * @return mixed value for the session variable
+ */
+function session($name, $value = null) {
+    if (!isset($_SESSION)) return null;
+    if (func_num_args() === 1)
+        return (isset($_SESSION[$name]) ? $_SESSION[$name] : null);
+    if ($value === null)
+        unset($_SESSION[$name]);
+    else
+        $_SESSION[$name] = $value;
+}
+/**
+ * Wraps around $_COOKIE and setcookie().
+ *
+ * @param string $name name of the cookie to get or set
+ * @param string $value optional. value to set for the cookie
+ * @param integer $expire default 1 year. expiration in seconds.
+ * @param string $path default '/'. path for the cookie.
+ *
+ * @return string value if only the name param is passed.
+ */
+function cookie($name, $value = null, $expire = 31536000, $path = '/') {
+    if (func_num_args() === 1)
+        return (isset($_COOKIE[$name]) ? $_COOKIE[$name] : null);
+    setcookie($name, $value, time() + $expire, $path);
+}
+/**
+ * Returns the client's IP address.
+ *
+ * @return string client's ip address.
+ */
+function ip() {
+    foreach(array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key)
+        if (isset($_SERVER[$key])) return $_SERVER[$key];
+    return '0.0.0.0';
+}
+/**
+ *
+ *
+ *
+ */
+function logger($path=null){
+    $path = $path?:config('logger.file');
+    $logs = array();
+    register_shutdown_function(function() use ($path, &$logs){
+        return count($logs) > 0 ? file_put_contents($path, implode(array_map(function($log){
+            return count($log) > 1 ? call_user_func_array('sprintf', $log) : current($log);
+        }, $logs), PHP_EOL). PHP_EOL, FILE_APPEND | LOCK_EX) : false;
+    });
+    return function() use (&$logs){
+        return func_num_args() > 0 ? $logs[] = func_get_args() : false;
+    };
+}
